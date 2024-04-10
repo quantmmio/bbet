@@ -11,7 +11,7 @@ https://peoplestreasury.com/
 
 /// @title The Taxable Contract v1.0.1
 /// @author People's Treasury
-/// @notice Creates an optional tax, flexible within a hardcoded range of 0.25% to 15%. Defaults to 10%.
+/// @notice Creates an optional tax, flexible within a hardcoded range of 0% to 2%. Defaults to 1%.
 /// @dev This contract emits events, stores tax vars, and performs checks.
 
 /*
