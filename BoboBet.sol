@@ -15,6 +15,10 @@ contract BoboBet is ERC20, ERC20Burnable, ERC20Permit, ERC20Votes, AccessControl
     bytes32 public constant ALWAYS_TAXED_FROM = keccak256("ALWAYS_TAXED_FROM");
     bytes32 public constant ALWAYS_TAXED_TO = keccak256("ALWAYS_TAXED_TO");
     bytes32 public constant BLACKLISTED = keccak256("BLACKLISTED");
+    bytes32 public constant GOVERNOR_ROLE = keccak256("GOVERNOR_ROLE");
+    bytes32 public constant PRESIDENT_ROLE = keccak256("PRESIDENT_ROLE");
+    bytes32 public constant EXCLUDER_ROLE = keccak256("EXCLUDER_ROLE");
+
 
     constructor(address __owner) ERC20("BoboBet", "BBET") ERC20Permit("BoboBet")
     Taxable()
@@ -25,22 +29,27 @@ contract BoboBet is ERC20, ERC20Burnable, ERC20Permit, ERC20Votes, AccessControl
         _grantRole(NOT_TAXED_TO, __owner);
         _grantRole(NOT_TAXED_FROM, address(this));
         _grantRole(NOT_TAXED_TO, address(this));
+        _grantRole(DEFAULT_ADMIN_ROLE, __owner);
+        _grantRole(GOVERNOR_ROLE, __owner);
+        _grantRole(PRESIDENT_ROLE, __owner);
+        _grantRole(EXCLUDER_ROLE, __owner);
+
         _mint(msg.sender, 777000000000 * 10 ** decimals());
     }
 
-    function enableTax() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function enableTax() public onlyRole(GOVERNOR_ROLE) {
         _taxon();
     }
 
-    function disableTax() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function disableTax() public onlyRole(GOVERNOR_ROLE) {
         _taxoff();
     }
 
-    function updateTax(uint newtax) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function updateTax(uint newtax) public onlyRole(GOVERNOR_ROLE) {
         _updatetax(newtax);
     }
 
-    function updateTaxDestination(address newdestination) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function updateTaxDestination(address newdestination) public onlyRole(PRESIDENT_ROLE) {
         _updatetaxdestination(newdestination);
     }
 
